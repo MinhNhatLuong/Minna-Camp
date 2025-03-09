@@ -1,0 +1,23 @@
+<% layout('layouts/boilerplate') %>
+
+<h1>All Campgrounds</h1>
+
+<% campGroundList.forEach(element=> { %>
+    <div class="card mb-3">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="<%= element.images[0].url %>" alt="" class="img-fluid  rounded-start">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><%= element.title %></h5>
+                    <p class="card-text">
+                        <small class="text-muted"><%= element.location %></small>
+                    </p>
+                    <p class="card-text"><%= element.description %></p>
+                    <a class="btn btn-primary" href="/campgrounds/<%= element._id %>">View <%= element.title %></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% }) %>
