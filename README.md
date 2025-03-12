@@ -1,6 +1,6 @@
-# 🌍 Minna-Camp! 🏝️✈️  
+# 🌍 Minna Camp! 🏝️✈️  
 
-Welcome to **Campground Blog**, a platform where you can share your favorite campground destinations, post your experiences, and interact with others by leaving comments and ratings!  
+Welcome my project - **Campground Blog**, a platform where you can share your favorite campground destinations, post your experiences, and interact with others by leaving comments and ratings!  
 
 ## ✨ Features  
 
@@ -8,6 +8,11 @@ Welcome to **Campground Blog**, a platform where you can share your favorite cam
 - ⭐ **Rate destinations** – Give ratings to places based on your experiences.  
 - 💬 **Comment on posts** – Engage with the community and discuss travel tips.  
 - 🔍 **Discover new places** – Browse through posts shared by fellow travelers.  
+
+## 🧰 Tools
+- **Libraries**: 
+- **Framework**:
+- **Languages**: 
 
 ## 🚀 Getting Started  
 
