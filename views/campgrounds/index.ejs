@@ -8,9 +8,9 @@
         <div class="row">
             <div class="col-md-4">
                 <% if (element.images.length) { %>
-                    <img src="<%= element.images[0].url %>" alt="" class="img-fluid rounded-start">
+                    <img crossorigin="anonymous" src="<%= element.images[0].url %>" alt="" class="img-fluid rounded-start">
                 <% } else { %>
-                    <img src="" alt="" class="img-fluid rounded-start">
+                    <img crossorigin="anonymous" src="" alt="" class="img-fluid rounded-start">
                 <% } %>
             </div>
             <div class="col-md-8">
