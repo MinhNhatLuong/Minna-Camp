@@ -1,8 +1,6 @@
-// if (process.env.NODE_ENV !== "production") {
-//     require('dotenv').config();
-// }
-
-require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
 
 //Import library session
 const express = require('express');
@@ -17,6 +15,7 @@ const localStrategy = require('passport-local');
 const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
 
 //Import Error handling session
 const ExpressError = require('./utils/ExpressError');
@@ -28,11 +27,13 @@ const usersRoute = require('./routes/usersRoute');
 
 //Import mongoose sessions
 const mongoose = require('mongoose');
+// const dbUrl = process.env.DB_URL;
+const dbUrl = 'mongodb://127.0.0.1:27017/myCamp';
 
 main().catch(e => console.log(e))
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/myCamp');
+    await mongoose.connect(dbUrl);
     console.log("DATABASE CONNECTION OPEN!");
 }
 
@@ -47,7 +48,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize({
     replaceWith: '_',
 }));
-app.use(helmet());
 
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
@@ -82,6 +82,9 @@ const fontSrcUrls = [
     "https://cdn.jsdelivr.net/",
     "https://use.fontawesome.com/"
 ];
+
+app.use(helmet());
+
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
@@ -105,7 +108,20 @@ app.use(
     })
 );
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto: {
+        secret: 'mySecretKey'
+    },
+    touchAfter: 24*60*60,
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e);
+})
+
 const sessionConfig = {
+    store,
     name: 'ssck',
     secret: "mySecretKey",
     resave: false,
@@ -134,12 +150,6 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     res.locals.currentUser = req.user;
     next();
-})
-
-app.get('/makeuser', async (req, res) => {
-    const user = new User ({email: "luongminhnhat1604@gmail.com", username: "minhnhatlun2"});
-    const newUser = await User.register(user, 'minhnhatpro');
-    res.send(newUser);
 })
 
 app.use('/campgrounds', campgroundsRoute);
