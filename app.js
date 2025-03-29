@@ -28,7 +28,7 @@ const usersRoute = require('./routes/usersRoute');
 //Import mongoose sessions
 const mongoose = require('mongoose');
 // const dbUrl = process.env.DB_URL;
-const dbUrl = 'mongodb://127.0.0.1:27017/myCamp';
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/myCamp';
 
 main().catch(e => console.log(e))
 
@@ -108,10 +108,12 @@ app.use(
     })
 );
 
+const secret = process.env.SECRET || 'mySecretKey';
+
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
-        secret: 'mySecretKey'
+        secret: secret,
     },
     touchAfter: 24*60*60,
 });
@@ -123,7 +125,7 @@ store.on("error", function (e) {
 const sessionConfig = {
     store,
     name: 'ssck',
-    secret: "mySecretKey",
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -170,6 +172,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err });
 })
 
-app.listen(3000, () => {
-    console.log("LISTEN ON PORT 3000!");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`LISTEN ON PORT ${port}!`);
 })
